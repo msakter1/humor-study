@@ -134,8 +134,7 @@
             await client.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: window.location.origin + '/auth/callback',
-                    flowType: 'pkce'   // ⭐ THIS FIXES THE #access_token PROBLEM
+                    redirectTo: window.location.origin + '/auth/callback'
                 }
             })
 
