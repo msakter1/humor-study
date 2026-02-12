@@ -125,14 +125,22 @@
 
         async function signIn() {
             const client = getClient();
+            // await client.auth.signInWithOAuth({
+            //     provider: 'google',
+            //     options: {
+            //         redirectTo: window.location.origin + '/auth/callback'
+            //     }
+            // })
             await client.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: window.location.origin + '/auth/callback'
+                    redirectTo: window.location.origin + '/auth/callback',
+                    flowType: 'pkce'   // ⭐ THIS FIXES THE #access_token PROBLEM
                 }
             })
-        }
 
+        }
+        
         // --- NEW PROACTIVE LOGIC ---
         async function renderApp() {
             const container = document.getElementById('content-view')

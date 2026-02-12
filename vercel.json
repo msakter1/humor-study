@@ -1,9 +1,7 @@
 {
-    "cleanUrls": true,
-    "rewrites": [
-      {
-        "source": "/auth/callback",
-        "destination": "/auth/callback.html"
-      }
+    "routes": [
+      { "src": "/auth/callback", "dest": "/auth/callback.js" },
+      { "src": "/api/(.*)", "dest": "/api/$1.js" }
     ]
   }
+  
