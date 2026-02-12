@@ -42,12 +42,12 @@
         
         try {
             console.log('Creating Supabase client...');
-            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             console.log('Supabase client created');
 
             // This reads #access_token from the URL hash and stores the session
             console.log('Getting session...');
-            supabase.auth.getSession().then((response) => {
+            client.auth.getSession().then((response) => {
                 console.log('Session response:', response);
                 
                 if (response.error) {
