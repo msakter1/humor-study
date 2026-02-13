@@ -125,12 +125,6 @@
 
         async function signIn() {
             const client = getClient();
-            // await client.auth.signInWithOAuth({
-            //     provider: 'google',
-            //     options: {
-            //         redirectTo: window.location.origin + '/auth/callback'
-            //     }
-            // })
             await client.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
@@ -141,25 +135,44 @@
         }
         
         // --- NEW PROACTIVE LOGIC ---
-        async function renderApp() {
-            const container = document.getElementById('content-view')
-            const client = getClient();
+        // async function renderApp() {
+        //     const container = document.getElementById('content-view')
+        //     const client = getClient();
 
-            // This listener solves the "flicker" by watching for the session to arrive
-            client.auth.onAuthStateChange(async (event, session) => {
-                if (session) {
-                    await showMemes(client, container);
-                } else {
-                    container.innerHTML = `
-                        <div class="auth-box">
-                            <h2>Login to see the memes 🔒</h2>
-                            <button class="vote-btn" onclick="signIn()" style="margin: 20px auto;">
-                                Login with Google
-                            </button>
-                        </div>`
-                }
-            });
-        }
+        //     // This listener solves the "flicker" by watching for the session to arrive
+        //     client.auth.onAuthStateChange(async (event, session) => {
+        //         if (session) {
+        //             await showMemes(client, container);
+        //         } else {
+        //             container.innerHTML = `
+        //                 <div class="auth-box">
+        //                     <h2>Login to see the memes 🔒</h2>
+        //                     <button class="vote-btn" onclick="signIn()" style="margin: 20px auto;">
+        //                         Login with Google
+        //                     </button>
+        //                 </div>`
+        //         }
+        //     });
+        // }
+
+        // Replace your existing window.onload or renderApp() call with this:
+        
+        const client = getClient();
+        client.auth.onAuthStateChange((event, session) => {
+            console.log("Auth event:", event);
+            if (session) {
+                // User is signed in, show the memes
+                showMemes(client, document.getElementById('app-container'));
+            } else {
+                // No user, show the login screen
+                const container = document.getElementById('app-container');
+                container.innerHTML = `
+                    <div class="auth-box">
+                        <h2>Login to see the memes 🔒</h2>
+                        <button class="vote-btn" onclick="signIn()">Login with Google</button>
+                    </div>`;
+            }
+        });
 
         async function showMemes(client, container) {
             const { data, error } = await client.from('images').select('*')
@@ -186,9 +199,7 @@
             container.innerHTML = html + `</ul>`
         }
 
-        renderApp()
+        // renderApp()
     </script>
 </body>
 </html>
-
-""
